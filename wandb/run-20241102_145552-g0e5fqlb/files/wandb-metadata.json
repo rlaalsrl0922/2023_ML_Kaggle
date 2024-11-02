@@ -1,0 +1,32 @@
+{
+  "os": "Windows-11-10.0.22631-SP0",
+  "python": "3.12.4",
+  "startedAt": "2024-11-02T05:55:52.666968Z",
+  "program": "C:\\Users\\rlaal\\unidthon\\2023_ML_Kaggle\\main.py",
+  "codePath": "main.py",
+  "git": {
+    "remote": "https://github.com/rlaalsrl0922/2023_ML_Kaggle.git",
+    "commit": "e102bda02e38499e815d05dd51e70aaa5cd09b46"
+  },
+  "email": "alsrlspah0922@gmail.com",
+  "root": "C:\\Users\\rlaal\\unidthon\\2023_ML_Kaggle",
+  "host": "MinkiKim",
+  "username": "rlaal",
+  "executable": "C:\\ProgramData\\anaconda3\\python.exe",
+  "codePathLocal": "main.py",
+  "cpu_count": 8,
+  "cpu_count_logical": 16,
+  "disk": {
+    "/": {
+      "total": "511260946432",
+      "used": "274853011456"
+    }
+  },
+  "memory": {
+    "total": "14877257728"
+  },
+  "cpu": {
+    "count": 8,
+    "countLogical": 16
+  }
+}

@@ -10,7 +10,7 @@ import torch.optim as optim
 import torchvision.transforms
 from torch.utils.data import DataLoader
 from tqdm import tqdm
-
+from .utils import *
 import wandb
 
 
@@ -34,8 +34,8 @@ class Trainer(object):
             kor_time = (datetime.now() + timedelta(hours=9)).strftime("%m%d%H%M")
             name = kor_time + "_epochs-" + str(self.args.num_train_epochs) + "_batch-" + str(self.args.batch_size)
             wandb.init(
-                project="2023-kks",
-                entity="2023-kks",
+                project="UniDthon-4th",
+                entity="UniDthon-4th",
                 name=name,
                 config={
                     "learning_rate": self.args.learning_rate,
@@ -50,8 +50,7 @@ class Trainer(object):
         total_steps = len(train_dataloader) * self.args.num_train_epochs
         optimizer = optim.AdamW(self.model.parameters(), lr=0)
         scheduler = optim.lr_scheduler.OneCycleLR(optimizer, max_lr=self.args.learning_rate, total_steps=total_steps)
-        criterion = nn.MSELoss()
-        scaler = torch.cuda.amp.GradScaler()
+        scaler = torch.cuda.amp.GradScaler(enabled=True)
         self.model.train()
 
         for epoch in range(self.args.num_train_epochs):
@@ -63,9 +62,9 @@ class Trainer(object):
                 optimizer.zero_grad()
                 noisy_images = noisy_images.to(self.device)
                 clean_images = clean_images.to(self.device)
-                with torch.cuda.amp.autocast():
+                with torch.autocast(device_type=self.device):
                     outputs = self.model(noisy_images)
-                    loss = criterion(outputs, noisy_images - clean_images)
+                    loss = psnr(clean_images, outputs)
                 scaler.scale(loss).backward()
                 scaler.step(optimizer)
                 scaler.update()
@@ -105,7 +104,6 @@ class Trainer(object):
 
     def evaluate(self):
         valid_dataloader = DataLoader(self.valid_dataset, self.args.eval_batch_size, num_workers=self.args.num_workers)
-        criterion = nn.MSELoss()
         self.model.eval()
         pbar = tqdm(valid_dataloader, total=len(valid_dataloader), leave=True)
         eval_loss = 0
@@ -114,9 +112,10 @@ class Trainer(object):
             for noisy_images, clean_images in pbar:
                 noisy_images = noisy_images.to(self.device)
                 clean_images = clean_images.to(self.device)
-                with torch.cuda.amp.autocast():
+                with torch.autocast(device_type=self.device):
                     outputs = self.model(noisy_images)
-                    loss = criterion(outputs, noisy_images - clean_images)
+                    loss = psnr(clean_images, outputs)
+
                 batch_size = noisy_images.size(0)
                 eval_loss += loss * batch_size
                 num_samples += batch_size
@@ -125,8 +124,24 @@ class Trainer(object):
             print(f"validation loss: {eval_loss}")
             if self.args.do_wandb:
                 wandb.log({"valid_loss": eval_loss.item()})
-
+    '''
     def inference(self, output_path, output_file_name):
+
+        for noisy_image, noisy_image_path in test_loader:
+            noisy_image = noisy_image.to(device)
+            denoised_image = model(noisy_image)
+            
+            # denoised_image를 CPU로 이동하여 이미지 저장
+            denoised_image = denoised_image.cpu().squeeze(0)
+            denoised_image = (denoised_image * 0.5 + 0.5).clamp(0, 1)
+            denoised_image = transforms.ToPILImage()(denoised_image)
+
+            # Save denoised image
+            output_filename = noisy_image_path[0]
+            denoised_filename = output_path + '/' + output_filename.split('/')[-1][:-4] + '.jpg'
+            denoised_image.save(denoised_filename) 
+            
+            print(f'Saved denoised image: {denoised_filename}')
         if not os.path.exists(output_path):
             os.makedirs(output_path)
         test_dataloader = DataLoader(self.test_dataset, batch_size=1, shuffle=False)
@@ -134,7 +149,7 @@ class Trainer(object):
         self.model.eval()
         for noisy_image, noisy_image_path in pbar:
             noisy_image = noisy_image.to(self.device)
-            with torch.cuda.amp.autocast():
+            with torch.autocast(device_type=self.device):
                 noise = self.model(noisy_image)
                 denoised_image = noisy_image - noise
             denoised_image = denoised_image.cpu().squeeze(0)
@@ -171,3 +186,4 @@ class Trainer(object):
                 writer.writerow([file_name[:-4], y_values])
 
         print("CSV file created successfully.")
+    '''

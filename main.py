@@ -4,7 +4,7 @@ import torch
 from torch.utils.data import random_split
 
 from src.dataset import ScanImageDataset, ScanImageTestDataset
-from src.model import DnCNN
+from src.model import *
 from src.trainer import Trainer
 from src.transform import get_test_transform, get_transform
 from src.utils import set_seed, get_parameter_nums
@@ -14,21 +14,16 @@ def main(args):
     set_seed(args.seed)
 
     if torch.cuda.is_available():
-        # This enables tf32 on Ampere GPUs which is only 8% slower than
-        # float16 and almost as accurate as float32
-        # This was a default in pytorch until 1.12
         torch.backends.cuda.matmul.allow_tf32 = True
 
     transform = get_transform()
     test_transform = get_test_transform()
 
-    model = DnCNN()
+    model = Restormer()
 
     if args.resume is not None:
         checkpoint = torch.load(args.resume, map_location="cpu")
         model.load_state_dict(checkpoint["state_dict"])
-        # if scaler is not None and 'scaler' in checkpoint:
-        #    scaler.load_state_dict(checkpoint['scaler'])
         print(f"=> from resuming checkpoint '{args.resume}' ")
 
     dataset = ScanImageDataset(
@@ -62,9 +57,9 @@ if __name__ == "__main__":
     parser.add_argument("--split_ratio", default=0.95, type=float)
     parser.add_argument("--eval_batch_size", default=32, type=int)
     parser.add_argument("--num_train_epochs", default=1, type=int)
-    parser.add_argument("--noisy_image_dir", default="/local_datasets/CSE/train_scan", type=str)
-    parser.add_argument("--clean_image_dir", default="/local_datasets/CSE/train_clean", type=str)
-    parser.add_argument("--test_image_dir", default="/local_datasets/CSE/test_scan", type=str)
+    parser.add_argument("--noisy_image_dir", default="C:\\Users\\rlaal\\OneDrive\\Desktop\\Training\\noisy", type=str)
+    parser.add_argument("--clean_image_dir", default="C:\\Users\\rlaal\\OneDrive\\Desktop\\Training\\clean", type=str)
+    parser.add_argument("--test_image_dir", default="C:\\Users\\rlaal\\OneDrive\\Desktop\\Validation\\noisy", type=str)
     parser.add_argument("--num_workers", default=4, type=int)
     parser.add_argument("--do_train", default=True, type=bool)
     parser.add_argument("--do_wandb", default=True, type=bool)

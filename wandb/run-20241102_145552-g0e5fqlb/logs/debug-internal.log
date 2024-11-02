@@ -1,0 +1,16 @@
+{"time":"2024-11-02T14:55:52.6788309+09:00","level":"INFO","msg":"using version","core version":"0.18.5"}
+{"time":"2024-11-02T14:55:52.6788309+09:00","level":"INFO","msg":"created symlink","path":"C:\\Users\\rlaal\\unidthon\\2023_ML_Kaggle\\wandb\\run-20241102_145552-g0e5fqlb\\logs\\debug-core.log"}
+{"time":"2024-11-02T14:55:53.0254131+09:00","level":"INFO","msg":"created new stream","id":"g0e5fqlb"}
+{"time":"2024-11-02T14:55:53.0254131+09:00","level":"INFO","msg":"stream: started","id":"g0e5fqlb"}
+{"time":"2024-11-02T14:55:53.0254131+09:00","level":"INFO","msg":"handler: started","stream_id":{"value":"g0e5fqlb"}}
+{"time":"2024-11-02T14:55:53.0254131+09:00","level":"INFO","msg":"sender: started","stream_id":"g0e5fqlb"}
+{"time":"2024-11-02T14:55:53.0254131+09:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"g0e5fqlb"}}
+{"time":"2024-11-02T14:55:53.47363+09:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-11-02T14:57:50.0346718+09:00","level":"INFO","msg":"stream: closing","id":"g0e5fqlb"}
+{"time":"2024-11-02T14:57:50.0351874+09:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-11-02T14:57:50.0385688+09:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-11-02T14:57:52.7570752+09:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-11-02T14:57:53.1351557+09:00","level":"INFO","msg":"handler: closed","stream_id":{"value":"g0e5fqlb"}}
+{"time":"2024-11-02T14:57:53.1351557+09:00","level":"INFO","msg":"sender: closed","stream_id":"g0e5fqlb"}
+{"time":"2024-11-02T14:57:53.1351557+09:00","level":"INFO","msg":"writer: Close: closed","stream_id":{"value":"g0e5fqlb"}}
+{"time":"2024-11-02T14:57:53.1356597+09:00","level":"INFO","msg":"stream: closed","id":"g0e5fqlb"}

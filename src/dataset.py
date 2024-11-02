@@ -54,6 +54,10 @@ class ScanImageTestDataset(Dataset):
         noisy_image_path = self.noisy_image_paths[index]
         noisy_image = load_img(self.noisy_image_paths[index])
 
+        # Convert numpy array to PIL image
+        if isinstance(noisy_image, np.ndarray):
+            noisy_image = Image.fromarray(noisy_image)
+
         if self.transform:
             noisy_image = self.transform(noisy_image)
 
